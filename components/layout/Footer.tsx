@@ -57,7 +57,7 @@ export default function Footer() {
               {[
                 { name: "Home", href: "/" },
                 { name: "Dashboard", href: "/dashboard" },
-                { name: "Wallet", href: "/wallet" },
+                { name: "Wallet", href: "/wallet/metamask" },
                 { name: "Sustainability", href: "/sustainability" },
                 { name: "Community", href: "/community" }
               ].map((link) => (
@@ -153,3 +153,6 @@ export default function Footer() {
     </footer>
   );
 } 
+
+
+

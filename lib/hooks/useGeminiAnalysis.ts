@@ -1,145 +1,170 @@
 "use client";
 
-import { useState } from "react";
-import { GeminiAnalysis } from "@/lib/types";
+import { useState, useCallback } from 'react';
+import { toast } from 'sonner';
 
 interface UseGeminiAnalysisProps {
-  merchant?: string;
-  amount?: number;
-  category?: string;
-  prompt?: string;
+  transactions: Transaction[];
+  walletAddress?: string | null;
+  useMockData?: boolean;
 }
 
 interface UseGeminiAnalysisReturn {
-  analyze: () => Promise<GeminiAnalysis | null>;
-  analyzePrompt: (prompt: string) => Promise<string>;
-  analysis: GeminiAnalysis | null;
-  textAnalysis: string;
-  isLoading: boolean;
+  analyzeTransactions: () => Promise<void>;
+  isAnalyzing: boolean;
+  result: GeminiAnalysisResult | null;
   error: string | null;
+}
+
+// Types
+export interface Transaction {
+  id: string;
+  date: string;
+  amount: number;
+  merchant?: string;
+  category?: string;
+  description?: string;
+}
+
+export interface SustainabilityAnalysis {
+  score: number;
+  carbonFootprint: number;
+  recommendations: string[];
+  merchantSustainabilityScore?: number;
+  alternativeMerchants?: string[];
+  offsetCost: number;
+}
+
+// Mock data for development when API rate limits are hit
+const MOCK_DATA = {
+  predictedSpend: 125.75,
+  recommendedTopUp: 150,
+  riskLevel: 'medium',
+  insights: [
+    'Your spending shows a consistent pattern with occasional spikes',
+    'Weekly average spend is around $125',
+    'Consider setting up automatic top-ups to avoid low balances'
+  ]
+};
+
+interface GeminiAnalysisResult {
+  predictedSpend: number;
+  recommendedTopUp: number;
+  riskLevel: string;
+  insights: string[];
 }
 
 /**
  * Custom hook for analyzing transactions or merchants using the Gemini API
  * @param props Optional properties to configure the analysis
  */
-export function useGeminiAnalysis(props?: UseGeminiAnalysisProps): UseGeminiAnalysisReturn {
-  const [analysis, setAnalysis] = useState<GeminiAnalysis | null>(null);
-  const [textAnalysis, setTextAnalysis] = useState<string>('');
-  const [isLoading, setIsLoading] = useState(false);
+export const useGeminiAnalysis = ({
+  transactions,
+  walletAddress,
+  useMockData = false
+}: UseGeminiAnalysisProps): UseGeminiAnalysisReturn => {
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [result, setResult] = useState<GeminiAnalysisResult | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  /**
-   * Analyze a transaction based on merchant, amount, and category
-   */
-  const analyze = async (): Promise<GeminiAnalysis | null> => {
-    if (!props?.merchant || !props?.amount || !props?.category) {
-      setError("Merchant, amount, and category are required");
-      return null;
+  // Function to analyze transactions using Gemini API
+  const analyzeTransactions = useCallback(async () => {
+    if (!transactions.length || !walletAddress) {
+      setError('No transactions or wallet address available');
+      return;
     }
 
-    setIsLoading(true);
+    if (useMockData) {
+      // Use mock data for development
+      setIsAnalyzing(true);
+      setTimeout(() => {
+        setResult(MOCK_DATA);
+        setIsAnalyzing(false);
+      }, 2000); // Simulate API delay
+      return;
+    }
+
+    setIsAnalyzing(true);
     setError(null);
 
     try {
-      const response = await fetch("/api/gemini", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+      // Format transaction data for the API
+      const transactionData = transactions.map(tx => ({
+        date: new Date(tx.date).toISOString(),
+        amount: tx.amount,
+        category: tx.category || 'uncategorized',
+        merchant: tx.merchant || 'unknown'
+      }));
+
+      // First try with the flash model (faster, lower rate limit impact)
+      const response = await fetch('/api/gemini', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          prompt: `Merchant: ${props.merchant}, Amount: $${props.amount}, Category: ${props.category}`
+          prompt: `Analyze these transactions for wallet ${walletAddress} and provide:
+            1. Predicted weekly spend (in USD)
+            2. Recommended top-up amount (in USD)
+            3. Risk level (low, medium, high)
+            4. 2-3 key insights about spending patterns
+            
+            Format response as JSON with keys: predictedSpend, recommendedTopUp, riskLevel, insights (array)
+            
+            Transaction data: ${JSON.stringify(transactionData)}`,
+          modelComplexity: 'medium', // Use medium complexity for this task
+          task: 'spending_analysis'
         }),
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "Failed to analyze transaction");
+        throw new Error(`API error: ${response.status}`);
       }
 
       const data = await response.json();
       
-      // Parse the analysis text into structured data
-      // This is a simplified version - in production you would have more robust parsing
-      const analysisText = data.analysis;
-      setTextAnalysis(analysisText);
+      // Parse the response - handle both string and object formats
+      let parsedResult: GeminiAnalysisResult;
+      if (typeof data.result === 'string') {
+        try {
+          parsedResult = JSON.parse(data.result);
+        } catch {
+          // If parsing fails, try to extract the data using regex
+          const predictedSpend = parseFloat(data.result.match(/predictedSpend["\s:]+(\d+\.?\d*)/)?.[1] || '0');
+          const recommendedTopUp = parseFloat(data.result.match(/recommendedTopUp["\s:]+(\d+\.?\d*)/)?.[1] || '0');
+          const riskLevel = data.result.match(/riskLevel["\s:]+["'](\w+)["']/)?.[1] || 'medium';
+          const insightsMatch = data.result.match(/insights["\s:]+\[(.*?)\]/);
+          const insights = insightsMatch ? 
+            insightsMatch[1].split(',').map((s: string) => s.replace(/["']/g, '').trim()) : 
+            ['No specific insights available'];
+          
+          parsedResult = {
+            predictedSpend,
+            recommendedTopUp,
+            riskLevel,
+            insights
+          };
+        }
+      } else {
+        parsedResult = data.result;
+      }
       
-      // Extract score (looking for a number followed by /100)
-      const scoreMatch = analysisText.match(/(\d+)\s*\/\s*100/);
-      const score = scoreMatch ? parseInt(scoreMatch[1]) : Math.floor(Math.random() * 40) + 40;
-      
-      // Extract carbon footprint (looking for a number followed by kg CO2 or similar)
-      const carbonMatch = analysisText.match(/(\d+\.?\d*)\s*kg\s*CO[²₂]?/i);
-      const carbon = carbonMatch ? parseFloat(carbonMatch[1]) : parseFloat((Math.random() * 3 + 0.5).toFixed(1));
-      
-      // Create a structured analysis
-      const geminiAnalysis: GeminiAnalysis = {
-        merchantAnalysis: analysisText,
-        sustainabilityScore: score,
-        carbonFootprint: carbon,
-        recommendation: analysisText.split('recommendations:')[1]?.split('\n')[0]?.trim() || 
-                        `Consider more sustainable alternatives to ${props.merchant}`,
-        alternativeSuggestions: [],
-        impactSummary: `This transaction has a sustainability score of ${score}/100 and generated approximately ${carbon}kg of CO₂.`,
-      };
-
-      setAnalysis(geminiAnalysis);
-      return geminiAnalysis;
+      setResult(parsedResult);
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : "An unknown error occurred";
-      setError(errorMessage);
-      return null;
+      console.error('Error analyzing transactions:', err);
+      setError('Failed to analyze transactions. Using backup data.');
+      // Fallback to mock data when API fails
+      setResult(MOCK_DATA);
+      toast.error('Analysis API rate limit reached. Using cached data instead.');
     } finally {
-      setIsLoading(false);
+      setIsAnalyzing(false);
     }
-  };
-
-  /**
-   * Analyze any prompt directly with Gemini
-   * @param prompt The text to analyze
-   */
-  const analyzePrompt = async (prompt: string): Promise<string> => {
-    if (!prompt) {
-      setError("Prompt is required");
-      return "";
-    }
-
-    setIsLoading(true);
-    setError(null);
-    setTextAnalysis('');
-
-    try {
-      const response = await fetch('/api/gemini', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ prompt }),
-      });
-
-      if (!response.ok) {
-        throw new Error(`API request failed with status ${response.status}`);
-      }
-
-      const data = await response.json();
-      setTextAnalysis(data.analysis);
-      return data.analysis;
-    } catch (error) {
-      console.error('Error analyzing with Gemini:', error);
-      const errorMessage = error instanceof Error ? error.message : 'Failed to analyze with Gemini';
-      setError(errorMessage);
-      return "";
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  }, [transactions, walletAddress, useMockData]);
 
   return {
-    analyze,
-    analyzePrompt,
-    analysis,
-    textAnalysis,
-    isLoading,
-    error,
+    analyzeTransactions,
+    isAnalyzing,
+    result,
+    error
   };
-} 
+};
+
+export default useGeminiAnalysis; 

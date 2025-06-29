@@ -15,18 +15,23 @@ import {
   Sparkles,
   Heart,
   Settings,
-  CreditCard as CreditCardIcon
+  CreditCard as CreditCardIcon,
+  RefreshCw,
+  Loader2,
+  Zap,
+  ArrowUpRight
 } from "lucide-react";
 import MainNav from "@/components/layout/MainNav";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import WalletConnectButton from "@/components/wallet/WalletConnectButton";
 import TransactionCard from "@/components/cards/TransactionCard";
 import { Transaction } from "@/lib/types";
 import Image from "next/image";
 import Footer from "@/components/layout/Footer";
+import { useUSDCBalance } from "@/lib/hooks/useUSDCBalance";
+import { shortenAddress } from "@/lib/utils";
 
 // Mock data for the wallet page
 const mockTransactions: Transaction[] = [
@@ -140,6 +145,25 @@ const MotionDiv = dynamic(
 
 export default function WalletPage() {
   const [activeTab, setActiveTab] = useState("overview");
+  const [walletAddress, setWalletAddress] = useState<string | null>(null);
+  
+  // Use our USDC balance hook
+  const { 
+    formattedBalance: usdcBalance, 
+    isLoading: isLoadingUSDC,
+    executeTopUp,
+    refetch: refetchUSDCBalance
+  } = useUSDCBalance({
+    walletAddress,
+    autoTopUp: true,
+    topUpThreshold: 50,
+    topUpAmount: 100
+  });
+  
+  // Handle wallet connection
+  const handleWalletConnected = (address: string) => {
+    setWalletAddress(address);
+  };
 
   return (
     <div className="relative min-h-screen w-full flex flex-col bg-gradient-to-br from-[#fcfcfd] to-[#f5f5f7]">
@@ -177,7 +201,7 @@ export default function WalletPage() {
         <MainNav />
         <main className="container mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-16 max-w-[1400px]">
           {/* Page header */}
-          <div className="py-8 lg:py-12 max-w-[85%] mx-auto text-center mb-12">
+          {/* <div className="py-8 lg:py-12 max-w-[85%] mx-auto text-center mb-12">
             <motion.div
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -185,7 +209,7 @@ export default function WalletPage() {
               className="space-y-6"
             >
               <motion.h1 
-                className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold tracking-tight mb-6"
+                className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-extrabold tracking-tight mb-6"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: 0.2 }}
@@ -203,10 +227,10 @@ export default function WalletPage() {
                 Connect your MetaMask Card to track and optimize your sustainable spending
               </motion.p>
             </motion.div>
-          </div>
+          </div> */}
 
           {/* Connect Card Section */}
-          <Card className="mb-20 overflow-visible relative border-none bg-transparent shadow-none">
+          <Card className="mb-20 pt-12 overflow-visible relative border-none bg-transparent shadow-none">
             <CardContent className="p-0">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
                 <motion.div
@@ -272,7 +296,8 @@ export default function WalletPage() {
                       <WalletConnectButton 
                         className="w-full sm:w-auto text-lg px-12 py-6 bg-gradient-to-r from-orange-400 to-orange-500 hover:from-orange-500 hover:to-orange-600 
                         shadow-lg hover:shadow-orange-400/30 hover:shadow-2xl rounded-2xl text-white font-semibold transition-all duration-300 
-                        hover:scale-[1.02] focus:scale-[0.98] active:scale-[0.98]" 
+                        hover:scale-[1.02] focus:scale-[0.98] active:scale-[0.98]"
+                        onWalletConnected={handleWalletConnected}
                       />
                     </motion.div>
                   </div>
@@ -457,16 +482,43 @@ export default function WalletPage() {
               <Card className="glass-card border-white/30 col-span-1 shadow-xl bg-white/80 backdrop-blur-sm transition-all duration-300 hover:shadow-2xl">
                 <CardHeader className="pb-2">
                   <CardTitle className="flex items-center text-lg gap-2">
-                    <Sparkles className="h-5 w-5 text-green-500" />
-                    Carbon Offsets
+                    <CircleDollarSign 
+                      className="h-5 w-5 text-blue-500" 
+                    />
+                    USDC Balance
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="text-3xl font-bold text-gray-900">4.8kg</div>
-                  <div className="flex items-center text-sm text-green-600 mt-1">
-                    <ArrowRight className="h-3 w-3 rotate-45 mr-1" />
-                    +0.5kg today
-                  </div>
+                  {walletAddress ? (
+                    <>
+                      {isLoadingUSDC ? (
+                        <div className="flex items-center gap-2">
+                          <Loader2 className="h-4 w-4 animate-spin" />
+                          <span>Loading...</span>
+                        </div>
+                      ) : (
+                        <>
+                          <div className="text-3xl font-bold text-gray-900">${usdcBalance}</div>
+                          <div className="flex justify-between items-center mt-2">
+                            <div className="text-xs text-gray-500">
+                              {walletAddress && shortenAddress(walletAddress)}
+                            </div>
+                            <Button 
+                              variant="outline" 
+                              size="sm" 
+                              onClick={() => refetchUSDCBalance()}
+                              className="text-xs"
+                            >
+                              <RefreshCw className="h-3 w-3 mr-1" />
+                              Refresh
+                            </Button>
+                          </div>
+                        </>
+                      )}
+                    </>
+                  ) : (
+                    <div className="text-gray-500">Connect wallet to view balance</div>
+                  )}
                 </CardContent>
               </Card>
             </motion.div>
@@ -494,6 +546,54 @@ export default function WalletPage() {
               </Card>
             </motion.div>
           </div>
+
+          {/* Auto Top-Up Card */}
+          {walletAddress && (
+            <div className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto mb-12">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.3 }}
+              >
+                <Card className="glass-card border-white/30 shadow-xl bg-gradient-to-r from-blue-50 to-blue-100 backdrop-blur-sm transition-all duration-300 hover:shadow-2xl">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Zap className="h-5 w-5 text-blue-500" />
+                      Auto Top-Up
+                    </CardTitle>
+                    <CardDescription>
+                      Automatically top up your USDC balance when it falls below a threshold
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                      <div>
+                        <p className="text-sm text-gray-600 mb-1">Current threshold: <span className="font-medium">$50.00</span></p>
+                        <p className="text-sm text-gray-600">Top-up amount: <span className="font-medium">$100.00</span></p>
+                      </div>
+                      <Button 
+                        className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700"
+                        onClick={() => executeTopUp(100)}
+                        disabled={isLoadingUSDC}
+                      >
+                        {isLoadingUSDC ? (
+                          <>
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            Processing...
+                          </>
+                        ) : (
+                          <>
+                            <ArrowUpRight className="mr-2 h-4 w-4" />
+                            Top Up Now
+                          </>
+                        )}
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            </div>
+          )}
 
           {/* Tabs Section */}
           <div className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">

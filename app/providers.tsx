@@ -4,17 +4,36 @@ import { useState, useEffect } from "react";
 import { ThemeProvider } from "next-themes";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { WagmiProvider, createConfig, http } from "wagmi";
-import { mainnet, linea, lineaSepolia } from "wagmi/chains";
+import { sepolia } from "wagmi/chains";
 import { metaMask } from "wagmi/connectors";
+import { Toaster } from "@/components/ui/sonner";
 
-// Create wagmi config
+// Define Linea Sepolia chain
+const lineaSepolia = {
+  id: 59141,
+  name: "Linea Sepolia",
+  nativeCurrency: {
+    name: "Ether",
+    symbol: "ETH",
+    decimals: 18,
+  },
+  rpcUrls: {
+    default: { http: ["https://rpc.sepolia.linea.build"] },
+    public: { http: ["https://rpc.sepolia.linea.build"] },
+  },
+  blockExplorers: {
+    default: { name: "Lineascan", url: "https://sepolia.lineascan.build" },
+  },
+  testnet: true,
+} as const;
+
+// Create wagmi config with testnet chains only
 const config = createConfig({
   ssr: true,
-  chains: [mainnet, linea, lineaSepolia],
+  chains: [sepolia, lineaSepolia],
   connectors: [metaMask()],
   transports: {
-    [mainnet.id]: http(),
-    [linea.id]: http(),
+    [sepolia.id]: http(),
     [lineaSepolia.id]: http(),
   },
 });
@@ -49,6 +68,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
       <WagmiProvider config={config}>
         <QueryClientProvider client={queryClient}>
           {children}
+          <Toaster />
         </QueryClientProvider>
       </WagmiProvider>
     </ThemeProvider>
