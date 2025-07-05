@@ -291,13 +291,13 @@ export default function Home() {
 
             <Tabs defaultValue="analysis" className="max-w-4xl mx-auto">
               <TabsList className="glass grid w-full grid-cols-3 mb-8 p-1 border border-white/30">
-                <TabsTrigger value="analysis" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-500 data-[state=active]:to-purple-600 data-[state=active]:text-white px-4 py-3 rounded-xl transition-all">
+                <TabsTrigger value="analysis" className="data-[state=active]:bg-gradient-to-r text-purple-500 data-[state=active]:from-purple-500 data-[state=active]:to-purple-600 data-[state=active]:text-white px-4 py-3 rounded-xl transition-all">
                   AI Analysis
                 </TabsTrigger>
-                <TabsTrigger value="impact" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-blue-600 data-[state=active]:text-white px-4 py-3 rounded-xl transition-all">
+                <TabsTrigger value="impact" className="data-[state=active]:bg-gradient-to-r text-blue-500 data-[state=active]:from-blue-500 data-[state=active]:to-blue-600 data-[state=active]:text-white px-4 py-3 rounded-xl transition-all">
                   Impact Tracking
                 </TabsTrigger>
-                <TabsTrigger value="community" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-green-500 data-[state=active]:to-green-600 data-[state=active]:text-white px-4 py-3 rounded-xl transition-all">
+                <TabsTrigger value="community" className="data-[state=active]:bg-gradient-to-r text-green-500 data-[state=active]:from-green-500 data-[state=active]:to-green-600 data-[state=active]:text-white px-4 py-3 rounded-xl transition-all">
                   Community
                 </TabsTrigger>
               </TabsList>
@@ -476,8 +476,8 @@ export default function Home() {
         {/* CTA Section */}
         <section className="py-12 px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center">
-            <Badge variant="secondary" className="glass px-4 py-2 text-sm font-medium mb-4 bg-sustainability-100 text-sustainability-800 border-sustainability-200">
-              <Award className="w-4 h-4 mr-2 text-amber-600" />
+            <Badge variant="secondary" className="glass px-4 py-2 text-sm font-medium mb-4 bg-sustainability-100 text-sustainability-800 border-sustainability-200 text-green-600">
+              <Award className="w-4 h-4 mr-2 text-green-600" />
               Ready to Make a Difference?
             </Badge>
             <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-6">

@@ -83,7 +83,7 @@ const SustainabilityCard = ({
       <Card className="glass-card overflow-hidden">
         <CardHeader className="pb-2">
           <div className="flex justify-between items-start">
-            <CardTitle className="text-lg font-semibold">{title}</CardTitle>
+            <CardTitle className="text-lg font-semibold text-gray-900">{title}</CardTitle>
             <Badge 
               className={`bg-gradient-to-r ${bgClass} text-white`}
             >
@@ -97,12 +97,12 @@ const SustainabilityCard = ({
             {/* Sustainability Score */}
             <div>
               <div className="flex justify-between items-center mb-1">
-                <div className="text-sm text-gray-500 flex items-center">
-                  <Leaf className="h-3.5 w-3.5 mr-1 text-sustainability-500" />
+                <div className="text-sm text-gray-600 flex items-center">
+                  <Leaf className="h-3.5 w-3.5 mr-1 text-green-600" />
                   Sustainability Score
                 </div>
                 <motion.div 
-                  className="text-lg font-bold"
+                  className="text-lg font-bold text-gray-900"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.3 }}
@@ -123,19 +123,19 @@ const SustainabilityCard = ({
             {/* Carbon Impact */}
             <div className="grid grid-cols-2 gap-2 mt-2">
               <div className="rounded-lg p-2 bg-white/5">
-                <div className="text-xs text-gray-500">Carbon Footprint</div>
-                <div className="text-sm font-semibold">{carbonFootprint} kg CO₂</div>
+                <div className="text-xs text-gray-600">Carbon Footprint</div>
+                <div className="text-sm font-semibold text-gray-900">{carbonFootprint} kg CO₂</div>
               </div>
               <div className="rounded-lg p-2 bg-white/5">
-                <div className="text-xs text-gray-500">Carbon Offset</div>
-                <div className="text-sm font-semibold">{carbonOffset} kg CO₂</div>
+                <div className="text-xs text-gray-600">Carbon Offset</div>
+                <div className="text-sm font-semibold text-gray-900">{carbonOffset} kg CO₂</div>
               </div>
             </div>
             
             {/* Net Impact */}
             <div className="mt-1">
               <div className="flex justify-between items-center mb-1">
-                <div className="text-xs text-gray-500">Net Carbon Impact</div>
+                <div className="text-xs text-gray-600">Net Carbon Impact</div>
                 <div className={`text-sm font-semibold ${netCarbonImpact <= 0 ? 'text-green-500' : 'text-red-500'}`}>
                   {netCarbonImpact <= 0 ? `${Math.abs(netCarbonImpact)} kg CO₂ saved` : `${netCarbonImpact} kg CO₂ emitted`}
                 </div>
@@ -146,8 +146,8 @@ const SustainabilityCard = ({
             {/* Recommendation */}
             {recommendation && (
               <div className="mt-2 p-2 rounded-lg bg-white/5 text-sm">
-                <div className="text-xs font-medium mb-1">Recommendation:</div>
-                <div className="text-xs text-gray-600">{recommendation}</div>
+                <div className="text-xs font-medium mb-1 text-gray-800">Recommendation:</div>
+                <div className="text-xs text-gray-700">{recommendation}</div>
               </div>
             )}
           </div>

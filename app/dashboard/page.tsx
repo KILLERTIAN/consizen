@@ -281,7 +281,7 @@ export default function DashboardPage() {
                   </div>
                   Recent Transactions
                 </CardTitle>
-                <CardDescription>
+                <CardDescription className="text-gray-600">
                   Your recent activity on the {currentNetwork === "sepolia" ? "Sepolia" : "Linea Sepolia"} testnet
                 </CardDescription>
               </CardHeader>
@@ -294,8 +294,8 @@ export default function DashboardPage() {
                     >
                       <div className="flex items-center justify-between">
                         <div>
-                          <div className="font-medium">{tx.description}</div>
-                          <div className="text-sm text-gray-500">{formatDate(tx.date)}</div>
+                          <div className="font-medium text-gray-900">{tx.description}</div>
+                          <div className="text-sm text-gray-600">{formatDate(tx.date)}</div>
                         </div>
                         <div className="flex items-center gap-4">
                           <div className="text-right">
@@ -328,26 +328,26 @@ export default function DashboardPage() {
                   </div>
                   Sustainability Impact
                 </CardTitle>
-                <CardDescription>
+                <CardDescription className="text-gray-600">
                   Your environmental impact across all networks
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div className="bg-white rounded-lg p-4 shadow-sm border border-orange-100">
-                    <div className="text-sm text-gray-500">Sustainability Score</div>
+                    <div className="text-sm text-gray-600">Sustainability Score</div>
                     <div className="text-2xl font-bold text-orange-600">78/100</div>
-                    <div className="text-xs text-gray-400">+5 from last month</div>
+                    <div className="text-xs text-gray-500">+5 from last month</div>
                   </div>
                   <div className="bg-white rounded-lg p-4 shadow-sm border border-orange-100">
-                    <div className="text-sm text-gray-500">Carbon Offset</div>
+                    <div className="text-sm text-gray-600">Carbon Offset</div>
                     <div className="text-2xl font-bold text-green-600">2.4 kg</div>
-                    <div className="text-xs text-gray-400">CO₂ equivalent</div>
+                    <div className="text-xs text-gray-500">CO₂ equivalent</div>
                   </div>
                   <div className="bg-white rounded-lg p-4 shadow-sm border border-orange-100">
-                    <div className="text-sm text-gray-500">Eco Rewards</div>
+                    <div className="text-sm text-gray-600">Eco Rewards</div>
                     <div className="text-2xl font-bold text-orange-600">255 USDC</div>
-                    <div className="text-xs text-gray-400">Total earned</div>
+                    <div className="text-xs text-gray-500">Total earned</div>
                   </div>
                 </div>
               </CardContent>
@@ -370,12 +370,12 @@ export default function DashboardPage() {
                 {isWalletConnected ? (
                   <>
                     <div className="bg-white/80 rounded-lg p-3 mb-3 shadow-sm border border-orange-100">
-                      <div className="text-xs text-gray-500 mb-1">Address</div>
-                      <div className="text-sm font-mono truncate">{walletAddress}</div>
+                      <div className="text-xs text-gray-600 mb-1">Address</div>
+                      <div className="text-sm font-mono truncate text-gray-900">{walletAddress}</div>
                     </div>
                     <div className="grid grid-cols-2 gap-3">
                       <div className="bg-white/80 rounded-lg p-3 shadow-sm border border-orange-100">
-                        <div className="text-xs text-gray-500 mb-1">Sepolia</div>
+                        <div className="text-xs text-gray-600 mb-1">Sepolia</div>
                         <div className="text-lg font-bold text-orange-600">
                           {currentNetwork === "sepolia" ? (
                             isLoadingUSDC ? "Loading..." : `${usdcBalance} USDC`
@@ -383,7 +383,7 @@ export default function DashboardPage() {
                         </div>
                       </div>
                       <div className="bg-white/80 rounded-lg p-3 shadow-sm border border-green-100">
-                        <div className="text-xs text-gray-500 mb-1">Linea Sepolia</div>
+                        <div className="text-xs text-gray-600 mb-1">Linea Sepolia</div>
                         <div className="text-lg font-bold text-green-700">
                           {currentNetwork === "lineaSepolia" ? (
                             isLoadingUSDC ? "Loading..." : `${usdcBalance} USDC`

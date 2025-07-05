@@ -25,7 +25,7 @@ const impactCategories = [
     maxValue: 50,
     unit: "kg CO₂",
     icon: Cloud,
-    color: "from-gray-500 to-gray-600",
+    color: "from-red-500 to-red-600",
     description: "Total carbon emissions from your purchases."
   },
   {
@@ -52,7 +52,7 @@ const impactCategories = [
     maxValue: 100,
     unit: "kWh",
     icon: Wind,
-    color: "from-yellow-500 to-yellow-600",
+    color: "from-orange-500 to-orange-600",
     description: "Energy consumption related to your spending."
   }
 ];
@@ -109,7 +109,7 @@ export default function SustainabilityPage() {
   const [activeTab, setActiveTab] = useState("impact");
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-sustainability-50 to-gray-100">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-orange-50">
       <MainNav />
       
       <main className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16">
@@ -121,7 +121,7 @@ export default function SustainabilityPage() {
             transition={{ duration: 0.5 }}
           >
             <h1 className="text-3xl font-bold text-gray-900">Sustainability Impact</h1>
-            <p className="text-gray-600 mt-2">
+            <p className="text-gray-700 mt-2">
               Track and improve the environmental impact of your spending
             </p>
           </motion.div>
@@ -132,20 +132,20 @@ export default function SustainabilityPage() {
           <CardContent className="p-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
               <div>
-                <Badge className="mb-3 bg-sustainability-100 text-sustainability-800 border-sustainability-200">
+                <Badge className="mb-3 bg-green-100 text-green-800 border-green-200">
                   <Leaf className="h-3 w-3 mr-1" />
                   Net Positive Impact
                 </Badge>
-                <h2 className="text-2xl font-bold mb-3">Your Environmental Impact</h2>
-                <p className="text-gray-600 mb-6">
+                <h2 className="text-2xl font-bold mb-3 text-green-600">Your Environmental Impact</h2>
+                <p className="text-gray-700 mb-6">
                   Your sustainable spending choices have resulted in a net positive impact on the environment.
                   You&apos;ve saved 5.7kg CO₂ more than you&apos;ve emitted through your purchases.
                 </p>
                 <div className="flex items-center gap-4">
-                  <div className="text-4xl font-bold text-sustainability-500">+5.7</div>
+                  <div className="text-4xl font-bold text-green-600">+5.7</div>
                   <div>
-                    <div className="text-sm font-medium">kg CO₂ saved</div>
-                    <div className="text-xs text-gray-500">through your sustainable choices</div>
+                    <div className="text-sm font-medium text-gray-800">kg CO₂ saved</div>
+                    <div className="text-xs text-gray-600">through your sustainable choices</div>
                   </div>
                 </div>
                 <div className="mt-6">
@@ -157,15 +157,15 @@ export default function SustainabilityPage() {
               </div>
               <div>
                 <div className="relative p-4">
-                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-sustainability-500/20 to-sustainability-500/5"></div>
+                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-blue-500/20 to-purple-500/5"></div>
                   <div className="relative h-full">
                     <div className="p-3 bg-white/90 rounded-xl mb-3">
                       <div className="flex justify-between items-center">
                         <div className="flex items-center gap-2">
-                          <Globe className="h-5 w-5 text-sustainability-500" />
-                          <div className="font-medium">Total Carbon Footprint</div>
+                          <Globe className="h-5 w-5 text-blue-600" />
+                          <div className="font-medium text-gray-800">Total Carbon Footprint</div>
                         </div>
-                        <Badge className="bg-sustainability-100 text-sustainability-800">
+                        <Badge className="bg-blue-100 text-blue-800">
                           18.5 kg CO₂
                         </Badge>
                       </div>
@@ -173,10 +173,10 @@ export default function SustainabilityPage() {
                     <div className="p-3 bg-white/90 rounded-xl mb-3">
                       <div className="flex justify-between items-center">
                         <div className="flex items-center gap-2">
-                          <TreePine className="h-5 w-5 text-sustainability-500" />
-                          <div className="font-medium">Total Carbon Offsets</div>
+                          <TreePine className="h-5 w-5 text-green-600" />
+                          <div className="font-medium text-gray-800">Total Carbon Offsets</div>
                         </div>
-                        <Badge className="bg-sustainability-100 text-sustainability-800">
+                        <Badge className="bg-green-100 text-green-800">
                           24.2 kg CO₂
                         </Badge>
                       </div>
@@ -184,8 +184,8 @@ export default function SustainabilityPage() {
                     <div className="p-3 bg-white/90 rounded-xl">
                       <div className="flex justify-between items-center">
                         <div className="flex items-center gap-2">
-                          <Calculator className="h-5 w-5 text-sustainability-500" />
-                          <div className="font-medium">Net Impact</div>
+                          <Calculator className="h-5 w-5 text-purple-600" />
+                          <div className="font-medium text-gray-800">Net Impact</div>
                         </div>
                         <Badge className="bg-green-100 text-green-800">
                           +5.7 kg CO₂
@@ -208,19 +208,19 @@ export default function SustainabilityPage() {
           <TabsList className="glass grid grid-cols-3 w-full max-w-md mb-8">
             <TabsTrigger 
               value="impact" 
-              className="data-[state=active]:bg-blue-500 data-[state=active]:text-white"
+              className="data-[state=active]:bg-purple-500 data-[state=active]:text-white text-gray-700"
             >
               Impact Metrics
             </TabsTrigger>
             <TabsTrigger 
               value="offsets" 
-              className="data-[state=active]:bg-gray-500 data-[state=active]:text-white"
+              className="data-[state=active]:bg-green-500 data-[state=active]:text-white text-gray-700"
             >
               Carbon Offsets
             </TabsTrigger>
             <TabsTrigger 
               value="tips" 
-              className="data-[state=active]:bg-green-500 data-[state=active]:text-white"
+              className="data-[state=active]:bg-orange-500 data-[state=active]:text-white text-gray-700"
             >
               Eco Tips
             </TabsTrigger>
@@ -242,17 +242,17 @@ export default function SustainabilityPage() {
                         <category.icon className="h-6 w-6" />
                       </div>
                       <div className="flex justify-between items-center mb-2">
-                        <h3 className="text-sm font-medium">{category.name}</h3>
+                        <h3 className="text-sm font-medium text-gray-800">{category.name}</h3>
                         <TooltipProvider>
                           <Tooltip>
                             <TooltipTrigger>
-                              <Info className="h-4 w-4 text-gray-400" />
+                              <Info className="h-4 w-4 text-gray-500" />
                             </TooltipTrigger>
                             <TooltipContent>{category.description}</TooltipContent>
                           </Tooltip>
                         </TooltipProvider>
                       </div>
-                      <div className="text-2xl font-bold mb-2">
+                      <div className="text-2xl font-bold mb-2 text-gray-900">
                         {category.value} {category.unit}
                       </div>
                       <div className="w-full bg-gray-200 rounded-full h-2 mb-1">
@@ -263,7 +263,7 @@ export default function SustainabilityPage() {
                           transition={{ duration: 1, delay: 0.2 }}
                         />
                       </div>
-                      <div className="text-xs text-gray-500">
+                      <div className="text-xs text-gray-600">
                         {Math.round((category.value / category.maxValue) * 100)}% of typical consumer
                       </div>
                     </CardContent>
@@ -274,14 +274,14 @@ export default function SustainabilityPage() {
             
             <Card className="glass-card">
               <CardHeader>
-                <CardTitle>Impact Over Time</CardTitle>
-                <CardDescription>
+                <CardTitle className="text-gray-900">Impact Over Time</CardTitle>
+                <CardDescription className="text-gray-600">
                   Your sustainability metrics tracked over the past 3 months
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="h-64 flex items-center justify-center">
-                  <p className="text-gray-500">Impact charts will be displayed here</p>
+                  <p className="text-gray-600">Impact charts will be displayed here</p>
                 </div>
               </CardContent>
             </Card>
@@ -291,8 +291,8 @@ export default function SustainabilityPage() {
           <TabsContent value="offsets" className="space-y-6">
             <Card className="glass-card">
               <CardHeader>
-                <CardTitle>Your Carbon Offset Projects</CardTitle>
-                <CardDescription>
+                <CardTitle className="text-gray-900">Your Carbon Offset Projects</CardTitle>
+                <CardDescription className="text-gray-600">
                   Projects you&apos;re supporting through your sustainable spending
                 </CardDescription>
               </CardHeader>
@@ -314,11 +314,11 @@ export default function SustainabilityPage() {
                           />
                         </div>
                         <div className="flex-1">
-                          <h3 className="font-medium mb-1">{project.name}</h3>
+                          <h3 className="font-medium mb-1 text-gray-900">{project.name}</h3>
                           <p className="text-sm text-gray-600 mb-2">{project.description}</p>
                           <div className="flex justify-between items-center mb-1">
-                            <span className="text-xs text-gray-500">Your contribution</span>
-                            <span className="text-xs font-medium">{project.impact} {project.unit}</span>
+                            <span className="text-xs text-gray-600">Your contribution</span>
+                            <span className="text-xs font-medium text-gray-800">{project.impact} {project.unit}</span>
                           </div>
                           <Progress value={project.progress} className="h-1" />
                         </div>
@@ -332,22 +332,22 @@ export default function SustainabilityPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <Card className="glass-card">
                 <CardHeader>
-                  <CardTitle>Offset Breakdown</CardTitle>
+                  <CardTitle className="text-gray-900">Offset Breakdown</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="h-64 flex items-center justify-center">
-                    <p className="text-gray-500">Offset charts will be displayed here</p>
+                    <p className="text-gray-600">Offset charts will be displayed here</p>
                   </div>
                 </CardContent>
               </Card>
               
               <Card className="glass-card">
                 <CardHeader>
-                  <CardTitle>Impact Visualization</CardTitle>
+                  <CardTitle className="text-gray-900">Impact Visualization</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="h-64 flex items-center justify-center">
-                    <p className="text-gray-500">Impact visualization will be displayed here</p>
+                    <p className="text-gray-600">Impact visualization will be displayed here</p>
                   </div>
                 </CardContent>
               </Card>
@@ -356,13 +356,13 @@ export default function SustainabilityPage() {
           
           {/* Eco Tips Tab */}
           <TabsContent value="tips" className="space-y-6">
-            <Card className="glass-card">
-              <CardHeader>
-                <CardTitle>Sustainability Tips</CardTitle>
-                <CardDescription>
-                  Ways to further reduce your environmental impact
-                </CardDescription>
-              </CardHeader>
+                          <Card className="glass-card">
+                <CardHeader>
+                  <CardTitle className="text-gray-900">Sustainability Tips</CardTitle>
+                  <CardDescription className="text-gray-600">
+                    Ways to further reduce your environmental impact
+                  </CardDescription>
+                </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {sustainabilityTips.map((tip, index) => (
@@ -373,11 +373,11 @@ export default function SustainabilityPage() {
                       transition={{ duration: 0.3, delay: index * 0.1 }}
                     >
                       <div className="flex items-start gap-3 p-4 rounded-xl bg-white/50">
-                        <div className="w-8 h-8 rounded-full bg-sustainability-100 text-sustainability-700 flex items-center justify-center flex-shrink-0">
+                        <div className="w-8 h-8 rounded-full bg-green-100 text-green-700 flex items-center justify-center flex-shrink-0">
                           <Leaf className="h-4 w-4" />
                         </div>
                         <div className="flex-1">
-                          <p className="text-sm">{tip}</p>
+                          <p className="text-sm text-gray-700">{tip}</p>
                         </div>
                       </div>
                     </motion.div>
@@ -392,7 +392,7 @@ export default function SustainabilityPage() {
               carbonFootprint={2.1}
               carbonOffset={2.5}
               recommendation="Great choice! Your purchase at Whole Foods had a positive sustainability impact. Continue choosing organic and local products to maintain this positive trend."
-              className="w-full md:w-2/3 mx-auto"
+              className="w-full md:w-2/3 mx-auto text-gray-900"
             />
           </TabsContent>
         </Tabs>

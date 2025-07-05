@@ -234,7 +234,7 @@ export function AutoTopAgent({
             {isEnabled ? "Active" : "Inactive"}
           </Badge>
         </div>
-        <CardDescription>
+        <CardDescription className="text-gray-600">
           AI-powered automatic wallet top-up
         </CardDescription>
       </CardHeader>
@@ -259,7 +259,7 @@ export function AutoTopAgent({
                   <Wallet className={`h-4 w-4 text-${networkColor}-500`} />
                   <span className="text-sm text-gray-500">Current Balance:</span>
                 </div>
-                <div className="font-medium">{currentBalance} USDC</div>
+                <div className="font-medium text-gray-900">{currentBalance} USDC</div>
               </div>
             </div>
             
@@ -267,14 +267,14 @@ export function AutoTopAgent({
             {isEnabled && (
               <div className="mb-4">
                 <div className="flex items-center justify-between mb-2">
-                  <div className="text-sm font-medium flex items-center gap-1">
-                    <LineChart className="h-3.5 w-3.5" />
+                  <div className="text-sm font-medium flex items-center gap-1 text-gray-800">
+                    <LineChart className="h-3.5 w-3.5 text-gray-600" />
                     Spending Analysis
                   </div>
                   <Button 
                     variant="ghost" 
                     size="sm" 
-                    className="h-6 text-xs px-2"
+                    className="h-6 text-xs px-2 text-gray-700 hover:text-gray-900"
                     onClick={analyzeSendingPatterns}
                     disabled={isAnalyzing}
                   >
@@ -300,7 +300,7 @@ export function AutoTopAgent({
                               style={{ height: `${(day.amount / 50) * 100}%` }}
                             ></div>
                           </div>
-                          <div className="text-xs mt-1">{day.day}</div>
+                          <div className="text-xs mt-1 text-gray-700">{day.day}</div>
                         </div>
                       ))}
                     </div>
@@ -308,12 +308,12 @@ export function AutoTopAgent({
                     {predictedSpend !== null && recommendedAmount !== null && (
                       <div className="mt-3 pt-3 border-t border-gray-100">
                         <div className="flex justify-between text-xs mb-1">
-                          <span>Weekly Prediction:</span>
-                          <span className="font-medium">${predictedSpend.toFixed(2)}</span>
+                          <span className="text-gray-600">Weekly Prediction:</span>
+                          <span className="font-medium text-gray-900">${predictedSpend.toFixed(2)}</span>
                         </div>
                         <div className="flex justify-between text-xs">
-                          <span>Recommended Top-up:</span>
-                          <span className="font-medium">${recommendedAmount.toFixed(2)}</span>
+                          <span className="text-gray-600">Recommended Top-up:</span>
+                          <span className="font-medium text-gray-900">${recommendedAmount.toFixed(2)}</span>
                         </div>
                         
                         <Button
@@ -343,11 +343,12 @@ export function AutoTopAgent({
                     ) : (
                       <div className="flex flex-col items-center">
                         <LineChart className="h-6 w-6 mb-2 text-gray-400" />
-                        <p className="text-sm text-gray-500 mb-2">No spending data available</p>
+                        <p className="text-sm text-gray-600 mb-2">No spending data available</p>
                         <Button 
                           variant="outline" 
                           size="sm"
                           onClick={analyzeSendingPatterns}
+                          className="text-gray-700 border-gray-300 hover:bg-gray-50"
                         >
                           Analyze Spending
                         </Button>
@@ -361,7 +362,7 @@ export function AutoTopAgent({
             {/* Manual Top-up */}
             <div className="space-y-4">
               <div className="grid grid-cols-3 gap-2 items-center">
-                <Label htmlFor="amount" className="col-span-1">Amount (USDC):</Label>
+                <Label htmlFor="amount" className="col-span-1 text-gray-700">Amount (USDC):</Label>
                 <div className="col-span-2">
                   <Input 
                     id="amount" 
@@ -370,7 +371,7 @@ export function AutoTopAgent({
                     max={1000} 
                     value={amount} 
                     onChange={(e) => setAmount(e.target.value)}
-                    className={`border-${networkColor}-200`}
+                    className={`border-${networkColor}-200 text-gray-900`}
                   />
                 </div>
               </div>
@@ -393,15 +394,15 @@ export function AutoTopAgent({
               </Button>
               
               <div className="mt-4">
-                <div className="text-sm font-medium mb-2 flex items-center gap-1">
-                  <Clock className="h-3.5 w-3.5" />
+                <div className="text-sm font-medium mb-2 flex items-center gap-1 text-gray-800">
+                  <Clock className="h-3.5 w-3.5 text-gray-600" />
                   Agent Logs:
                 </div>
                 <ScrollArea className="h-24 w-full rounded border bg-black/5 p-2">
                   <div className="space-y-1">
                     {logs.map((log, i) => (
-                      <div key={i} className="text-xs text-gray-600 font-mono">
-                        <span className="text-gray-400">[{new Date().toLocaleTimeString()}]</span> {log}
+                      <div key={i} className="text-xs text-gray-700 font-mono">
+                        <span className="text-gray-500">[{new Date().toLocaleTimeString()}]</span> {log}
                       </div>
                     ))}
                   </div>
@@ -410,9 +411,9 @@ export function AutoTopAgent({
             </div>
           </>
         ) : (
-          <div className="text-center py-6 text-gray-500">
-            <AlertCircle className="mx-auto h-8 w-8 mb-2 text-gray-400" />
-            <p>Connect your wallet to use the AI Auto-Top Agent</p>
+          <div className="text-center py-6">
+            <AlertCircle className="mx-auto h-8 w-8 mb-2 text-gray-500" />
+            <p className="text-gray-600">Connect your wallet to use the AI Auto-Top Agent</p>
           </div>
         )}
       </CardContent>

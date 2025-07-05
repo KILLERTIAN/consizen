@@ -119,21 +119,21 @@ const recentActivities = [
     description: "Purchase at Starbucks Coffee",
     time: "2 hours ago",
     icon: Receipt,
-    color: "bg-blue-100 text-blue-600"
+    color: "bg-blue-200 text-blue-800"
   },
   {
     title: "Carbon Offset",
     description: "0.5kg CO₂ offset purchased",
     time: "2 hours ago",
     icon: Sparkles,
-    color: "bg-green-100 text-green-600"
+    color: "bg-green-200 text-green-800"
   },
   {
     title: "Fund Transfer",
     description: "$50 added to your card",
     time: "Yesterday",
     icon: CircleDollarSign,
-    color: "bg-purple-100 text-purple-600"
+    color: "bg-purple-200 text-purple-800"
   }
 ];
 
@@ -458,8 +458,8 @@ export default function WalletPage() {
             >
               <Card className="glass-card border-white/30 col-span-1 shadow-xl bg-white/80 backdrop-blur-sm transition-all duration-300 hover:shadow-2xl">
                 <CardHeader className="pb-2">
-                  <CardTitle className="flex items-center text-lg gap-2">
-                    <CircleDollarSign className="h-5 w-5 text-metamask-500" />
+                  <CardTitle className="flex items-center text-lg gap-2 text-orange-500">
+                    <CircleDollarSign className="h-5 w-5 text-orange-500" />
                     Card Balance
                   </CardTitle>
                 </CardHeader>
@@ -479,9 +479,9 @@ export default function WalletPage() {
               transition={{ duration: 0.5, delay: 0.1 }}
               whileHover={{ y: -5 }}
             >
-              <Card className="glass-card border-white/30 col-span-1 shadow-xl bg-white/80 backdrop-blur-sm transition-all duration-300 hover:shadow-2xl">
+              <Card className="glass-card border-white/30 col-span-1 shadow-xl bg-white/80 backdrop-blur-sm transition-all duration-300 hover:shadow-2xl min-h-[145px]">
                 <CardHeader className="pb-2">
-                  <CardTitle className="flex items-center text-lg gap-2">
+                  <CardTitle className="flex items-center text-lg gap-2 text-blue-500">
                     <CircleDollarSign 
                       className="h-5 w-5 text-blue-500" 
                     />
@@ -531,7 +531,7 @@ export default function WalletPage() {
             >
               <Card className="glass-card border-white/30 col-span-1 shadow-xl bg-white/80 backdrop-blur-sm transition-all duration-300 hover:shadow-2xl">
                 <CardHeader className="pb-2">
-                  <CardTitle className="flex items-center text-lg gap-2">
+                  <CardTitle className="flex items-center text-lg gap-2 text-blue-500">
                     <LineChart className="h-5 w-5 text-blue-500" />
                     Sustainability Score
                   </CardTitle>
@@ -605,21 +605,21 @@ export default function WalletPage() {
               <TabsList className="glass grid grid-cols-3 w-full max-w-md mx-auto mb-8 border border-white/30 rounded-xl overflow-hidden shadow-lg bg-white/50 backdrop-blur-sm p-1">
                 <TabsTrigger
                   value="overview"
-                  className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-orange-400 data-[state=active]:to-orange-500 data-[state=active]:text-white px-4 py-3 text-lg rounded-lg transition-all duration-300"
+                  className="data-[state=active]:bg-gradient-to-r text-orange-500 data-[state=active]:from-orange-400 data-[state=active]:to-orange-500 data-[state=active]:text-white px-4 py-3 text-lg rounded-lg transition-all duration-300"
                 >
                   <Receipt className="h-4 w-4 mr-2" />
                   Activity
                 </TabsTrigger>
                 <TabsTrigger
                   value="spend"
-                  className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-400 data-[state=active]:to-blue-500 data-[state=active]:text-white px-4 py-3 text-lg rounded-lg transition-all duration-300"
+                  className="data-[state=active]:bg-gradient-to-r text-blue-500 data-[state=active]:from-blue-400 data-[state=active]:to-blue-500 data-[state=active]:text-white px-4 py-3 text-lg rounded-lg transition-all duration-300"
                 >
                   <LineChart className="h-4 w-4 mr-2" />
                   Analytics
                 </TabsTrigger>
                 <TabsTrigger
                   value="settings"
-                  className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-400 data-[state=active]:to-purple-500 data-[state=active]:text-white px-4 py-3 text-lg rounded-lg transition-all duration-300"
+                  className="data-[state=active]:bg-gradient-to-r text-purple-500 data-[state=active]:from-purple-400 data-[state=active]:to-purple-500 data-[state=active]:text-white px-4 py-3 text-lg rounded-lg transition-all duration-300"
                 >
                   <Settings className="h-4 w-4 mr-2" />
                   Settings
@@ -646,7 +646,7 @@ export default function WalletPage() {
                           Your recent MetaMask Card transactions with sustainability scores
                         </CardDescription>
                       </CardHeader>
-                      <CardContent>
+                      <CardContent className="text-gray-800">
                         <motion.div className="space-y-4">
                           {mockTransactions.map((transaction, index) => (
                             <motion.div
@@ -665,8 +665,8 @@ export default function WalletPage() {
                   <div className="md:col-span-1">
                     <Card className="glass-card border-white/30 h-full shadow-xl bg-white/80 backdrop-blur-sm">
                       <CardHeader>
-                        <CardTitle className="flex items-center gap-2 text-xl">
-                          <Bell className="h-5 w-5 text-metamask-500" />
+                        <CardTitle className="flex items-center gap-2 text-xl text-orange-500 ">
+                          <Bell className="h-5 w-5 text-orange-500" />
                           Recent Activity
                         </CardTitle>
                       </CardHeader>
